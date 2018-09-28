@@ -1,0 +1,10 @@
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\bin\Debug\netcoreapp2.0\WebAPIAssignment.deps.json
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\bin\Debug\netcoreapp2.0\WebAPIAssignment.runtimeconfig.json
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\bin\Debug\netcoreapp2.0\WebAPIAssignment.runtimeconfig.dev.json
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\bin\Debug\netcoreapp2.0\WebAPIAssignment.dll
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\bin\Debug\netcoreapp2.0\WebAPIAssignment.pdb
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\obj\Debug\netcoreapp2.0\WebAPIAssignment.csproj.CoreCompileInputs.cache
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\obj\Debug\netcoreapp2.0\WebAPIAssignment.AssemblyInfoInputs.cache
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\obj\Debug\netcoreapp2.0\WebAPIAssignment.AssemblyInfo.cs
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\obj\Debug\netcoreapp2.0\WebAPIAssignment.dll
+C:\Users\shrey\netCoreProjects\WebAPIAssignment\obj\Debug\netcoreapp2.0\WebAPIAssignment.pdb

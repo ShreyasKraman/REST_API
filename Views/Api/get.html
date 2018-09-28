@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" 
+    integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" 
+    integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <body>
+        <h1 class="text-center">Simple HTTP Restful methods</h1>
+        <div id="jsonData" class="container-fluid">
+            <h2>Http Get</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody id="jsonTableBody"></tbody>
+            </table>
+        </div>
+
+        [<a href="./index.html">Go Back</a>]
+    </body>
+    
+    <script type="text/javaScript">
+
+/*************************************************************************************
+Step 1 : Using JavaScript fetch library to receive http GET response from the stated url
+         This script runs on load of this webpage
+*************************************************************************************/
+
+        fetch('http://localhost:5000/route/api')
+
+/*************************************************************************************
+Step 2: Fetching the text function from response. 
+        Response returns various methods out of which text is one such function.
+*************************************************************************************/        
+           .then(response => response.text())
+           .then(function(text){
+               //Parsing the text value to JSON object, since its in String format of JSON value
+                var obj = JSON.parse(text);
+                var cellValue = "";
+
+/*************************************************************************************
+Step 3: Iterating through the object to fetch corresponding values
+*************************************************************************************/                
+                for (value in obj){
+                    cellValue += "<tr><td>"+obj[value].id+"</td><td>"+obj[value].firstName+"</td><td>"+obj[value].lastName+"</td><td>"+obj[value].gender+"</td><td>"+obj[value].age+"</td></tr>";
+                }
+                document.getElementById("jsonTableBody").innerHTML = cellValue;
+            }).catch(function(error){
+                alert(error);
+            });
+
+    </script>
+    </html>

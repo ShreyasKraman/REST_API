@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" 
+    integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" 
+    integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <body>
+        <h1 class="text-center">Simple HTTP Restful methods</h1>
+        <div id="jsonData" class="container-fluid">
+                <h2>Http Delete</h2>
+                <p>Instructions
+                    <ul>
+                        <li>Check the check box for the corresponding row where the value needs to be delete</li>
+                        <li>Click the delete button to delete the record</li>
+                        <li style="font-weight:bold">At this time only one row can be deleted at a time by this application</li>
+                    </ul>
+                </p>
+            <table class="table" id="jsonTable">
+                <thead>
+                    <tr>
+                        <th>Selector</th>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody id="jsonTableBody"></tbody>
+            </table>
+
+            <button class="btn btn-primary" onClick="DeleteRow()">Delete Row</button>
+            [<a href="./index.html">Go Back</a>]
+        </div>
+
+        
+    </body>
+    
+    <script type="text/javaScript">
+/*************************************************************************************
+Step 1: Use fetch function for Http Get call, and fetch response of data present in
+        the model
+*************************************************************************************/
+        fetch('http://localhost:5000/route/api')
+/*************************************************************************************
+Step 2: Fetching the text function from response. 
+        Response returns various methods out of which text is one such function.
+*************************************************************************************/  
+            .then(response => response.text())
+            .then(function(text){
+                var obj = JSON.parse(text);
+                var cellValue = "";
+
+/*************************************************************************************
+Step 3: Iterating through the object to fetch corresponding values
+*************************************************************************************/
+                for (value in obj){
+                    cellValue += "<tr><td><input type='checkbox'></td><td>"+obj[value].id+"</td><td>"+obj[value].firstName+"</td><td>"+obj[value].lastName+"</td><td>"+obj[value].gender+"</td><td>"+obj[value].age+"</td></tr>";
+                }
+                document.getElementById("jsonTableBody").innerHTML = cellValue;
+        });
+
+/*************************************************************************************
+Step 4: Call function on click of Delete button
+*************************************************************************************/
+        function DeleteRow(){
+            
+            var table = document.getElementById("jsonTable");
+            var idValue="";
+            var firstNameValue="";
+            var lastNameValue="";
+            var genderValue="";
+            var ageValue="";
+
+/*************************************************************************************
+Step 5 : Fetching values from text boxes from the table
+*************************************************************************************/
+            for(var i=1,row;row = table.rows[i];i++){
+                //alert(row.cells[0].children[0].checked);
+                if(row.cells[0].children[0].checked){
+                        idValue = row.cells[1].innerHTML;
+                        firstNameValue = row.cells[2].innerHTML;
+                        lastNameValue = row.cells[3].innerHTML;
+                        genderValue = row.cells[4].innerHTML;
+                        ageValue = row.cells[5].innerHTML; 
+                        break;
+                }  
+            }
+            if(!idValue && !firstNameValue && !lastNameValue && !genderValue && !ageValue){
+                alert("Blank values are not allowed");
+            }else{
+/*************************************************************************************
+Step 6 : For using Http Delete, as per the controller, we append the ID value in the URL 
+*************************************************************************************/
+            var deleteUrl =   "http://localhost:5000/route/api/"+idValue;  
+/*************************************************************************************
+Step 7 : Using JavaScript fetch function for Http Delete call.
+         Please note the values fetched from above needs to be passed in JSON format
+*************************************************************************************/
+            fetch(deleteUrl, {
+                        method: 'DELETE',
+                        body: JSON.stringify({
+                        Id:idValue,
+                        FirstName:firstNameValue,
+                        LastName:lastNameValue,
+                        Gender:genderValue,
+                        Age:parseInt(ageValue,10)
+                        }),
+/*************************************************************************************
+Step 8 :    While using Http POST, PUT, PATCH and DELETE pass Content-type as application/json
+            Header is passed to notify the server that we are sending JSON value 
+
+            Fetch Supports CORS(Cross Origin Resource Sharing).
+            Using Normal Fetch without enabling CORS will not work
+            Hence CORS needs to be enabled, see Startup.cs file
+*************************************************************************************/
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8",
+                            }
+                        })
+/*************************************************************************************
+Step 9: Fetching the status function from response. 
+        Since the controller does not return any value, Status of 204 means the request
+        processing was 'OK' i.e the information was processed properly.
+*************************************************************************************/
+                        .then(response => response.status)
+                        .then(function(status){
+                            if(status==204){
+                                alert("Value deleted successfully");
+                                location.reload();
+                            }else{
+                                if(status==404){
+                                    alert("Bad Request");
+                                }else{
+                                    alert("Value deletion failed");
+                                }
+                            }
+                        }).catch(function(error){
+                            alert(error);
+                        });
+            }
+
+        };
+
+    </script>
+    </html>
