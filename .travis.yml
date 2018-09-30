@@ -1,3 +1,2 @@
 language: csharp
-solution: solution-name.sln
 script: build.sh
