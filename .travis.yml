@@ -1,1 +1,4 @@
 language: csharp
+script:
+  - chmod +x ./build.sh
+  - ./build.sh
